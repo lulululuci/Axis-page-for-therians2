@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXIS | Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="registration-card">
+        <div class="brand-header">
+            <h1>AXIS<span>.</span></h1>
+            <p>La red social de la comunidad Therian & Furry</p>
+        </div>
+
+        <div class="progress-container" id="progBarCont" style="display: none;">
+            <div class="progress-bar" id="progress" style="width: 0%;"></div>
+        </div>
+
+        <form id="multiStepForm" novalidate>
+            
+            <div class="step active" id="step0">
+                <h2>Bienvenido</h2>
+                <p class="step-desc">Ingresa tus credenciales para continuar</p>
+                
+                <div class="input-group">
+                    <input type="email" id="loginEmail" placeholder="Correo Electrónico" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                </div>
+                
+                <button type="submit" class="btn btn-purple">ENTRAR</button>
+                <p class="switch-text">¿No tienes cuenta? <b onclick="goToRegister()">Regístrate</b></p>
+            </div>
+
+            <div class="step" id="step1">
+                <h2>Cuéntanos de ti</h2>
+                <p class="step-desc">Información básica de tu perfil humano.</p>
+                
+                <div class="form-grid">
+                    <input type="text" id="regNombre" placeholder="Nombre/s" required>
+                    <input type="text" id="regApellido" placeholder="Apellido/s" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="regEmail" placeholder="Tu Correo Electrónico" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="regPassword" placeholder="Crea tu contraseña" required>
+                </div>
+                
+                <label class="field-label">Fecha de Nacimiento (Mínimo 18 años)</label>
+                <div class="input-group">
+                    <input type="date" id="fechaNac" required>
+                </div>
+                
+                <div class="form-grid">
+                    <input type="text" id="regPais" placeholder="País" required>
+                    <input type="text" id="regCiudad" placeholder="Ciudad / Provincia" required>
+                </div>
+                
+                <button type="button" class="btn btn-purple" onclick="nextStep(2)">CONTINUAR</button>
+                <button type="button" class="btn-link" onclick="nextStep(0)">Ya tengo cuenta</button>
+            </div>
+
+            <div class="step" id="step2">
+                <h2>Identidad</h2>
+                <p class="step-desc">¿Cómo te defines dentro de la comunidad?</p>
+
+                <div class="input-group">
+                    <select id="regComunidad" required>
+                        <option value="">¿Eres Therian o Furry?</option>
+                        <option value="therian">Therian</option>
+                        <option value="furry">Furry</option>
+                        <option value="cisgénero">Cisgénero</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <select id="regOrientacion" required>
+                        <option value="">Selecciona tu orientación</option>
+                        <option value="hetero">Heterosexual</option>
+                        <option value="bisexual">Bisexual</option>
+                        <option value="gay_lesbi">Gay / Lesbiana</option>
+                        <option value="pansexual">Pansexual</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <select id="regBusca" required>
+                        <option value="">¿Qué buscas en AXIS?</option>
+                        <option value="amistad">Amistad</option>
+                        <option value="citas">Citas / Relación</option>
+                        <option value="casual">Algo casual</option>
+                        <option value="comunidad">Solo Comunidad</option>
+                        <option value="no se">Aún no lo sé</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-purple" onclick="nextStep(3)">CONTINUAR</button>
+                <button type="button" class="btn-link" onclick="nextStep(1)">Atrás</button>
+            </div>
+
+            <div class="step" id="step3">
+                <h2>Personalidad</h2>
+                <p class="step-desc">¡Haz que tu perfil se destaque en la manada!</p>
+                
+                <label class="field-label">Intereses (Selecciona los que quieras)</label>
+                <div class="interests-container">
+                    <div class="chip" onclick="toggleChip(this)">Arte</div>
+                    <div class="chip" onclick="toggleChip(this)">Gaming</div>
+                    <div class="chip" onclick="toggleChip(this)">Fursuits</div>
+                    <div class="chip" onclick="toggleChip(this)">Naturaleza</div>
+                    <div class="chip" onclick="toggleChip(this)">Música</div>
+                </div>
+
+                <label class="field-label">Sobre ti (Tu Bio o Theriotipo)</label>
+                <div class="input-group">
+                    <textarea id="regBio" placeholder="Escribe algo sobre ti, tus vibras, hábitat..." rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-yellow">CREAR PERFIL</button>
+                <button type="button" class="btn-link" onclick="nextStep(2)">Atrás</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="registro.js"></script>
+</body>
+</html>

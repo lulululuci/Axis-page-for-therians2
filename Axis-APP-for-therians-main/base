@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AXIS - Registro</title>
+    <style>
+        /* Estilos básicos para que los pasos funcionen */
+        .step { display: none; }
+        .step.active { display: block; }
+        .progress-bar { height: 5px; background: #facc15; transition: width 0.3s; }
+        .chip { display: inline-block; padding: 5px 10px; border: 1px solid #ccc; cursor: pointer; margin: 2px; }
+        .chip.active { background: #facc15; color: #000; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .btn-main { padding: 10px 20px; cursor: pointer; }
+        .btn-back { padding: 10px 20px; cursor: pointer; background: #eee; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container" id="pCont" style="display:none;">
+        <div class="progress-bar" id="pBar" style="width: 0%;"></div>
+    </div>
+
+    <form id="axisForm" novalidate>
+        
+        <div class="step active" id="step0">
+            <h2>Bienvenido</h2>
+            <p class="desc">Ingresa tus datos para continuar</p>
+            <input type="email" id="loginEmail" placeholder="Email o Teléfono" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button type="submit" class="btn-main">ENTRAR</button>
+            <p class="switch-text">¿No tienes cuenta? <b onclick="go(1)" style="cursor:pointer">Regístrate</b></p>
+        </div>
+
+        <div class="step" id="step1">
+            <h2>Cuéntanos de ti</h2>
+            <p class="desc">Información personal.</p>
+            <div class="grid">
+                <input type="text" id="regNombre" placeholder="Nombre/s" required>
+                <input type="text" id="regApellido" placeholder="Apellido/s" required>
+            </div>
+
+            <label>Tus credenciales de acceso</label>
+            <div class="grid">
+                <input type="email" id="regEmail" placeholder="Tu Correo" required>
+                <input type="password" id="regPassword" placeholder="Crea tu contraseña" required>
+            </div>
+            
+            <label>Fecha de Nacimiento (Debes ser +18)</label>
+            <input type="date" id="fechaNac" required onchange="validarEdad(this)">
+            
+            <div class="grid">
+                <input type="text" id="regPais" placeholder="País" required>
+                <input type="text" id="regCiudad" placeholder="País/Ciudad/Provincia" required>
+            </div>
+            <button type="button" class="btn-main" onclick="go(2)">CONTINUAR</button>
+            <button type="button" class="btn-back" onclick="go(0)">Ya tengo cuenta</button>
+        </div>
+
+        <div class="step" id="step2">
+            <h2>Identidad</h2>
+            <p class="desc">¿Cómo te defines?</p>
+
+            <label>Comunidad</label>
+            <select id="regComunidad" required>
+                <option value="">¿Eres Therian o Furry?</option>
+                <option value="therian">Therian</option>
+                <option value="furry">Furry</option>
+                <option value="cisgénero">Cisgenero</option>
+                <option value="otro">Otro</option>
+            </select>
+
+            <label>Orientación Sexual</label>
+            <select id="regOrientacion" required>
+                <option value="">Selecciona tu orientación</option>
+                <option value="hetero">Heterosexual</option>
+                <option value="bisexual">Bisexual</option>
+                <option value="gay_lesbi">Gay / Lesbiana</option>
+                <option value="gay">Gay</option>
+                 <option value="otro">Otro</option>
+                <option value="pansexual">Pansexual</option>
+            </select>
+
+            <label>¿Qué buscas en AXIS?</label>
+            <select id="regBusca" required>
+                <option value="">Busco...</option>
+                <option value="amistad">Amistad</option>
+                <option value="citas">Citas / Relación</option>
+                <option value="casual">Algo casual</option>
+                <option value="comunidad">Solo Comunidad</option>
+                <option value="no se">Aún no lo se</option>
+            </select>
+
+            <button type="button" class="btn-main" onclick="go(3)">CONTINUAR</button>
+            <button type="button" class="btn-back" onclick="go(1)">Atrás</button>
+        </div>
+
+        <div class="step" id="step3">
+            <h2>Personalidad</h2>
+            <p class="desc">¡Haz que tu perfil destaque!</p>
+            
+            <div class="grid-chips">
+                <div class="chip" onclick="this.classList.toggle('active')">Arte</div>
+                <div class="chip" onclick="this.classList.toggle('active')">Gaming</div>
+                <div class="chip" onclick="this.classList.toggle('active')">Fursuits</div>
+            </div>
+
+            <label>Sobre ti (Bio)</label>
+            <textarea id="regBio" placeholder="Escribe algo sobre ti..." rows="4"></textarea>
+
+            <button type="submit" class="btn-main" style="background:#facc15; color:#000">CREAR PERFIL</button>
+            <button type="button" class="btn-back" onclick="go(2)">Atrás</button>
+        </div>
+    </form>
+
+    <script>
+        function go(s) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + s).classList.add('active');
+            
+            const pCont = document.getElementById('pCont');
+            const pBar = document.getElementById('pBar');
+            
+            if(s === 0) {
+                pCont.style.display = 'none';
+            } else {
+                pCont.style.display = 'block';
+                const pct = (s / 3) * 100;
+                pBar.style.width = pct + '%';
+            }
+        }
+
+        function validarEdad(input) {
+            const fecha = new Date(input.value);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - fecha.getFullYear();
+            const m = hoy.getMonth() - fecha.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+
+            if (edad < 18) {
+                alert("Debes ser mayor o tener 18 años para usar AXIS.");
+                input.value = "";
+            }
+        }
+
+        document.getElementById('axisForm').onsubmit = async function(e) {
+            e.preventDefault(); 
+            const esLogin = document.getElementById('step0').classList.contains('active');
+
+            if (esLogin) {
+                try {
+                    const respuesta = await fetch('http://localhost:5000/api/user/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: document.getElementById('loginEmail').value,
+                            password: document.getElementById('loginPassword').value
+                        })
+                    });
+                    const datos = await respuesta.json();
+                    if (respuesta.ok) {
+                        localStorage.setItem('axis_token', datos.token); 
+                        window.location.href = 'descubrir.html';
+                    } else {
+                        alert("Error: " + (datos.msg || "Datos incorrectos"));
+                    }
+                } catch (error) { alert("Error al conectar con el servidor."); }
+            } else {
+                const chipsActivos = document.querySelectorAll('.chip.active');
+                const intereses = Array.from(chipsActivos).map(chip => chip.innerText);
+
+                const nuevoUsuario = {
+                    nombre: document.getElementById('regNombre').value,
+                    apellido: document.getElementById('regApellido').value,
+                    email: document.getElementById('regEmail').value,
+                    password: document.getElementById('regPassword').value,
+                    fechaNac: document.getElementById('fechaNac').value,
+                    pais: document.getElementById('regPais').value,
+                    ciudad: document.getElementById('regCiudad').value,
+                    comunidad: document.getElementById('regComunidad').value,
+                    orientacion: document.getElementById('regOrientacion').value,
+                    busca: document.getElementById('regBusca').value,
+                    bio: document.getElementById('regBio').value,
+                    intereses: intereses
+                };
+
+                try {
+                    const respuesta = await fetch('http://localhost:5000/api/user/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(nuevoUsuario)
+                    });
+                    if (respuesta.ok) {
+                        alert("¡Perfil creado!");
+                        window.location.href = 'descubrir.html';
+                    } else {
+                        const datos = await respuesta.json();
+                        alert("Error: " + datos.msg);
+                    }
+                } catch (error

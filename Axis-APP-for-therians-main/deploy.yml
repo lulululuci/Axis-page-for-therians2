@@ -1,0 +1,38 @@
+name: Desplegar a GitHub Pages
+
+on:
+  push:
+    branches: ["main"] # Cambia "main" por "master" si tu rama principal se llama así
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # "." significa que subirá todos los archivos de la raíz. 
+          # archivos listos para producción se guardan en una carpeta como "dist" o "build", cambia el "." por "dist"
+          path: "." 
+
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
